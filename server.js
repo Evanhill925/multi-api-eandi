@@ -1,23 +1,33 @@
 const dotenv = require('dotenv');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-
 
 
 dotenv.config();
 
 
 
-
-
-
-const { Console } = require("console")
-
 const express = require("express");
 const res = require('express/lib/response');
 const app = express()
-const PORT = process.env.port
+const PORT = 8001
+const { Client , Events} = require('discord.js-selfbot-v13');
+
+
+const client = new Client({
+	// See other options here
+	// https://discordjs-self-v13.netlify.app/#/docs/docs/main/typedef/ClientOptions
+	// All partials are loaded automatically
+	checkUpdate: false,
+});
+
+client.login(process.env.token);
+
+
+app.use(express.urlencoded({
+	extended:true
+}) )
+
 
 app.get('/',(request,response)=>{
     response.sendFile(__dirname + "/index.html")
@@ -27,38 +37,22 @@ app.listen(PORT,()=>{
     console.log(`This server is running on port ${PORT}`)
 })
 
-
-
-
-
-
-
-const client = new Client({ 
-	intents: [GatewayIntentBits.Guilds] 
-});
-
-client.commands = new Collection();
-
-
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
-	const channel = client.channels.cache.get('1103168663617556571');
-	// channel.send('content');
-
-});
-
-
-
-client.login(process.env.token);
-
-app.post("/addPrompt", (request,res)=>{
+app.post("/addPrompt", (request,response)=>{
 	
-	console.log(request)
-	// console.log()
-	let a = document.getElementById('input').value
+
+	let a = request.body.userInput
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
-	channel.send(a);
+	channel.sendSlash('936929561302675456','imagine', a)
+	response.redirect('/')
 })
+
+
+// client.on('messageCreate', async (message) => {
+// 	if (message.author.id == 'Midjourney ID' && message.embeds && message.embeds[0].image) {
+// 		image = message.embeds[0].image.url
+// 		const channel = client.channels.cache.get('Channel ID')
+// 		channel.send(message.content + '\n\n' + image)
+// 	  }
+// 	}) 
+	
