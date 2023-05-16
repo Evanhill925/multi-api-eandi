@@ -35,6 +35,10 @@ app.get('/',(request,response)=>{
     response.sendFile(__dirname + "/index.html")
 })
 
+app.get('/main.js',(request,response)=>{
+    response.sendFile(__dirname + "/main.js")
+})
+
 app.listen(PORT,()=>{
     console.log(`This server is running on port ${PORT}`)
 })
@@ -46,7 +50,13 @@ app.post("/addPrompt", (request,response)=>{
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
-	response.redirect('/')
+	// channel.send(a)
+	console.log(channel.lastMessageId)
+	// console.log(channel.lastMessage)
+	// &lastMessage=${lastMessage}
+
+	response.redirect(`/?lastMessageId=${channel.lastMessageId}`)
+	return a
 })
 
 
@@ -65,16 +75,20 @@ client.on("messageCreate", async (message) => {
 	 id = message.id
 	 //disabled for bobby
 	//  channel = message.channelId
-	 console.log(message.attachments.size)
+	 console.log(message.content)
 	}
+	
 	if (message.attachments.size==1){
+		if(message.content.startsWith(`**${a}`)){
+
+		}
 		console.log(message.attachments.first().url)
 		image = message.attachments.first()?.url
 		//disabled for bobby
 		// channel.message(image)
 
 	}
-	
+	// message.author.id is midjourney id 
 	if (message.author.id !='936929561302675456'){
 		if (message.content.startsWith('!img')){
 			var test = client.channels.cache.get('1103168663617556571')
@@ -111,3 +125,4 @@ client.on("messageCreate", async (message) => {
 
 
 
+``
