@@ -55,8 +55,8 @@ app.post("/addPrompt", (request,response)=>{
 	// console.log(channel.lastMessage)
 	// &lastMessage=${lastMessage}
 
-	response.redirect(`/?lastMessageId=${channel.lastMessageId}`)
-	return a
+	// response.redirect(`/?lastMessageId=${channel.lastMessageId}`)
+	// return a
 })
 
 
