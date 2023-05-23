@@ -50,7 +50,7 @@ app.post("/addPrompt", (request,response)=>{
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
-	// channel.send(a)
+	channel.send(a)
 	console.log(channel.lastMessageId)
 	// console.log(channel.lastMessage)
 	// &lastMessage=${lastMessage}
