@@ -1,0 +1,29 @@
+body{
+    background-color: gray;
+}
+button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60px;
+    height: 60px;
+    display: inline;
+
+}
+
+#buttons{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 575px;
+    max-height: 600px;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 572px;
+    max-height: 600px;
+  }

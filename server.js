@@ -8,7 +8,6 @@ dotenv.config();
 
 
 
-
 const express = require("express");
 const res = require('express/lib/response');
 const app = express()
@@ -17,6 +16,11 @@ const { Client , Events} = require('discord.js-selfbot-v13');
 const { channel } = require('node:diagnostics_channel');
 var a = ""
 
+// app.public(express.static(__dirname + '/public/dist/public'));
+app.use(express.static('public'))
+function direct(){
+	response.render(__dirname + "/index2.html", {name:image})
+	}
 
 app.engine('html', require('ejs').renderFile);
 
@@ -76,15 +80,16 @@ app.post("/addPrompt", (request,response)=>{
 		//disabled for bobby
 		// channel.send(image)
 		 console.log(message.content)
-		 response.render(__dirname + "/index2.html", {name:image})
+		//  response.render(__dirname + "/index2.html", {name:image})
+		setTimeout(direct, 5000);
 
 
 
 		}});
 
-
-
-
+	function direct(){
+		response.render(__dirname + "/index2.html", {name:image})
+		}
 
 
 
