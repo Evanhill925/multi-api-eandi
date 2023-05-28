@@ -8,12 +8,18 @@ dotenv.config();
 
 
 
+
 const express = require("express");
 const res = require('express/lib/response');
 const app = express()
 const PORT = 8001
 const { Client , Events} = require('discord.js-selfbot-v13');
 const { channel } = require('node:diagnostics_channel');
+var a = ""
+
+
+app.engine('html', require('ejs').renderFile);
+
 
 
 const client = new Client({
@@ -35,6 +41,9 @@ app.get('/',(request,response)=>{
     response.sendFile(__dirname + "/index.html")
 })
 
+
+
+
 app.get('/main.js',(request,response)=>{
     response.sendFile(__dirname + "/main.js")
 })
@@ -50,80 +59,35 @@ app.post("/addPrompt", (request,response)=>{
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
-	channel.send(a)
+	// channel.send(a)
 	console.log(channel.lastMessageId)
-	// console.log(channel.lastMessage)
-	// &lastMessage=${lastMessage}
-	response.redirect(`/`)
+	console.log(channel.lastMessage)
+	// var holder = "https://cdn.discordapp.com/attachments/1103168663617556571/1112219753755443220/lilhelper_yoda_being_flushed_down_a_toilet_3c563fb5-5c72-42c8-90a6-dd79f2698def.png"
+
+	// response.render(__dirname + "/index2.html", {name:holder})
+
+	client.on("messageCreate", async (message) => {
+		if (message.author.id == '936929561302675456'&& message.content.startsWith(`**${a}`)&&message.attachments.size==1){
+		 console.log(message.attachments.first())
+		 console.log(`Message from ${message.author.username}: ${message.content}`)
+		 console.log('------')
+		 id = message.id
+		 image = message.attachments.first()?.url
+		//disabled for bobby
+		// channel.send(image)
+		 console.log(message.content)
+		 response.render(__dirname + "/index2.html", {name:image})
+
+
+
+		}});
+
+
+
+
+
+
+
 
 	// response.redirect(`/?lastMessageId=${channel.lastMessageId}`)
-	// return a
 })
-
-
-
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
-client.on("messageCreate", async (message) => {
-	if (message.author.id == '936929561302675456'){
-	 console.log(message.attachments.first())
-	 console.log(`Message from ${message.author.username}: ${message.content}`)
-	 console.log('------')
-	 id = message.id
-	 //disabled for bobby
-	//  channel = message.channelId
-	 console.log(message.content)
-	}
-	
-	if (message.attachments.size==1){
-		if(message.content.startsWith(`**${a}`)){
-
-		}
-		console.log(message.attachments.first().url)
-		image = message.attachments.first()?.url
-		//disabled for bobby
-		// channel.message(image)
-
-	}
-	// message.author.id is midjourney id 
-	if (message.author.id !='936929561302675456'){
-		if (message.content.startsWith('!img')){
-			var test = client.channels.cache.get('1103168663617556571')
-			test.sendSlash('936929561302675456','imagine', message.content.slice(5))
-			
-		}
-	}
-	
-
-	// await sleep(10000)
-	// console.log(message.attachments.first().url)
-	// image = message.attachments.first()?.url
-	
-	// channel = client.channels.cache.get(channel);
-}
-	
-	
-	
-	// message = await channel.messages.fetch(id);
-	// // console.log(message)
-	// console.log(message.attachments)
-	// console.log('------')
-	// console.log(message.attachments.first()?.url)
-	// image = message.attachments.first()?.url
-
-
-
-	
-	
-  );
-  
-//   client.login(process.env.BOT_TOKEN);
-
-
-
-
-``
