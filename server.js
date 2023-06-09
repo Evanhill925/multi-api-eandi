@@ -1,6 +1,10 @@
 const dotenv = require('dotenv');
 const fs = require('node:fs');
 const path = require('node:path');
+// const MongoClient = require('mongodb').MongoClient
+
+
+
 
 
 dotenv.config();
@@ -18,13 +22,50 @@ const { Client , Events} = require('discord.js-selfbot-v13');
 const { channel } = require('node:diagnostics_channel');
 var a = ""
 
-// app.use(bodyParser.urlencoded())
+
+// let db,
+//     dbConnectionStr = process.env.DB_STRING,
+//     dbName = 'Midjourney'
+
+// MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
+//     .then(client => {
+//         console.log(`Connected to ${dbName} Database`)
+//         db = client.db(dbName)
+//     })
+
+
+const mongoose = require('mongoose');
+const { url } = require('node:inspector');
+
+
+main().catch(err => console.log(err));
+
+async function main() {
+	dbName = 'Midjourney'
+  await mongoose.connect(process.env.DB_STRING);
+  console.log(`Connected to ${dbName} Database`);
+  const midSchema = new mongoose.Schema({
+	name: String,
+	url: String,
+	message_id: String
+  });
+  const Entry = mongoose.model('userEntry', midSchema);
+  const silence = new Entry({ name: 'Silence' });
+	console.log(silence.name); // 'Silence'
+	await silence.save();
+}
+
+
+
+
+
 app.use(express.urlencoded({
 	extended:true
 }) )
 app.use(express.json());
 
-
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
 
 
 
@@ -39,16 +80,7 @@ app.use(function (req, res, next) {
 
 
 
-
-// app.public(express.st
-// app.public(express.static(__dirname + '/public/dist/public'));
-app.use(express.static('public'))
-
-// function direct(){
-// 	response.render(__dirname + "/index2.html", {name:image})
-// 	}
-
-app.engine('html', require('ejs').renderFile);
+// app.engine('html', require('ejs').renderFile);
 
 
 const client = new Client({
@@ -64,15 +96,15 @@ client.login(process.env.token);
 
 
 app.get('/',(request,response)=>{
-    response.render(__dirname + "/index.html")
+    response.render("index.ejs")
 })
 
 
 
 
-app.get('/main.js',(request,response)=>{
-    response.sendFile(__dirname + "/main.js")
-})
+// app.get('/main.js',(request,response)=>{
+//     response.sendFile(__dirname + "/main.js")
+// })
 
 app.listen(PORT,()=>{
     console.log(`This server is running on port ${PORT}`)
@@ -99,7 +131,7 @@ app.post("/addPrompt", (request,response)=>{
 
 // Errors: ['time'] treats ending because of the time limit as an error
  var result = channel.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
-  .then(collected=> response.render(__dirname + "/index2.html", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
+  .then(collected=> response.render(__dirname + "/index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
   .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
   console.log(result)
 

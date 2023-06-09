@@ -1,0 +1,13 @@
+maybe add ability to generate buttons only if an image is present
+
+add small logo on web path 
+
+
+
+ <div id="imageContainer">
+            <div id="imagePlace">
+                <h1><%= name %></h1>
+                <h1><%= message_id %></h1>
+                <img src=<%= name %> >
+    
+            </div>
