@@ -38,25 +38,32 @@ const mongoose = require('mongoose');
 const { url } = require('node:inspector');
 
 
-main().catch(err => console.log(err));
+db = main().catch(err => console.log(err));
 
 async function main() {
 	dbName = 'Midjourney'
   await mongoose.connect(process.env.DB_STRING);
   console.log(`Connected to ${dbName} Database`);
-  const midSchema = new mongoose.Schema({
-	name: String,
-	url: String,
-	message_id: String
-  });
-  const Entry = mongoose.model('userEntry', midSchema);
-  const silence = new Entry({ name: 'Silence' });
-	console.log(silence.name); // 'Silence'
-	await silence.save();
+
+  
+
 }
 
+const midSchema = new mongoose.Schema({
+	username: {type:String},
+	prompt: {type:String},
+	image_url:{type:String},
+	image_message_id:{type:String}
+  });
+const Entry = mongoose.model('userInstruction', midSchema);
 
 
+// var Prompt = new Entry({ username: 'name_', image_url:'url_', image_message_id: 'message_id_', prompt:'prompt_'});
+
+
+
+// Prompt.save()
+// console.log(Prompt)
 
 
 app.use(express.urlencoded({
@@ -123,16 +130,37 @@ app.post("/addPrompt", (request,response)=>{
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
 	channel.send(a)
-	console.log(client.uptime)
-	console.log(client.isReady())
+	// console.log(client.uptime)
+	// console.log(client.isReady())
 
 	// const filter = m => m.content.startsWith('!vote');
 	const filter = m => m.content.startsWith(`**${a}`)&&m.attachments.size==1&&m.author.id =='936929561302675456'
 
 // Errors: ['time'] treats ending because of the time limit as an error
  var result = channel.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
-  .then(collected=> response.render(__dirname + "/index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
+//   .then(collected=> response.render(__dirname + "/index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
+	.then(collected=>{
+		var params = { username: "someuser",
+		 				image_url:collected.first().attachments.first().url,
+		  				image_message_id: collected.first().id,
+		   				prompt:a}
+
+		console.log(params)
+
+
+		Prompt = new Entry(params)
+		Prompt.save()
+		response.render("index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id})
+
+
+	}
+	)
   .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
+
+
+
+
+
   console.log(result)
 
 	})
