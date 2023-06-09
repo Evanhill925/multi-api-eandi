@@ -13,7 +13,10 @@
     
     <div id="imageContainer">
         <div id="imagePlace">
+            <h1><%= name %></h1>
+            <h1><%= message_id %></h1>
             <img src=<%= name %> >
+
         </div>
         <div id="buttons">
             <button id="one">U1</button>
@@ -26,10 +29,18 @@
              <button id="eight">V3</button>
              <button id="nine">V4</button>
              </div>
+             
 
     </div>
+    <script>
+        // stringify the data passed from router to ejs (within the EJS template only)
+        const sent_messageId = JSON.parse('<%- JSON.stringify(message_id) %>')
+    </script>
+    
+    
     <script src="main.js"></script>
+
+    
 </body>
 </html>
 
-<!-- <img src=<%= name %> > -->
