@@ -24,16 +24,6 @@ var a = ""
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-// let db,
-//     dbConnectionStr = process.env.DB_STRING,
-//     dbName = 'Midjourney'
-
-// MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
-//     .then(client => {
-//         console.log(`Connected to ${dbName} Database`)
-//         db = client.db(dbName)
-//     })
-
 
 const mongoose = require('mongoose');
 const { url } = require('node:inspector');
@@ -56,17 +46,14 @@ const midSchema = new mongoose.Schema({
 	username: {type:String},
 	prompt: {type:String},
 	image_url:{type:String},
-	image_message_id:{type:String}
+	image_message_id:{type:String},
+	type:{type:String},
+	origin_id:{type:String},
+	time:{type:String}
   });
 const Entry = mongoose.model('userInstruction', midSchema);
 
 
-// var Prompt = new Entry({ username: 'name_', image_url:'url_', image_message_id: 'message_id_', prompt:'prompt_'});
-
-
-
-// Prompt.save()
-// console.log(Prompt)
 
 
 app.use(express.urlencoded({
@@ -128,18 +115,16 @@ app.listen(PORT,()=>{
 app.post("/addPrompt", (request,response)=>{
 
 	
-	response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
+	// response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
 
-	console.log(adasdasdasd)()
+	// console.log(adasdasdasd)()
 	
 	console.log(request.body)
-	let a = request.body.userInput
+	let a = request.body.userInput.trim()
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
 	channel.send(a)
-	// console.log(client.uptime)
-	// console.log(client.isReady())
 
 	// const filter = m => m.content.startsWith('!vote');
 	const filter = m => m.content.startsWith(`**${a}`)&&m.attachments.size==1&&m.author.id =='936929561302675456'
@@ -151,7 +136,10 @@ app.post("/addPrompt", (request,response)=>{
 		var params = { username: "someuser",
 		 				image_url:collected.first().attachments.first().url,
 		  				image_message_id: collected.first().id,
-		   				prompt:a}
+		   				prompt:a,
+						type:'Original',
+						time:collected.first().createdTimestamp
+					}
 
 		console.log(params)
 
@@ -167,26 +155,10 @@ app.post("/addPrompt", (request,response)=>{
   .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
 
 
-
-
-
-  console.log(result)
-
 	})
 	
 
 
-function tester(){
-	console.log('testeris running')
-	
-
-	client.on('ready', () => {
-		console.log('client is ready to listen for messages')
-	const channel = client.channels.cache.get("1103168663617556571");
-	channel.send(a)}
-	)
-
-}
 
 
 
@@ -211,11 +183,22 @@ app.post("/checkmessage", async (request,response)=>{
 	
 	
 
-
 	const message = await channel.messages.fetch(request.body.message_id)
-	// console.log(message)
-	// console.log(message.components[0])
-	// console.log(message.components[0][0])
+
+
+	
+	function determine_type(row,column) {
+		if (column ===4){
+			return 'Reimagine'
+		}
+		if (row === 0) {
+		  return 'Upscale';
+		} else if (row === 1) {
+		  return 'Variation';
+		} else {
+		  return null;
+		}
+	  }
 
 	
 
@@ -226,14 +209,36 @@ app.post("/checkmessage", async (request,response)=>{
 
 
 
+
+
 	const filter = m => m.attachments.size==1&&m.author.id =='936929561302675456'&&m.reference.messageId == request.body.message_id
 
-	var last = await channel.awaitMessages({ filter, max: 1, time: 60_000, errors: ['time'] })
-//   .then(collected=> response.render(__dirname + "/index2.html", {name:collected.first().attachments.first().url,message_id:collected.first().id}))
-//   .catch(collected => console.log(`After a minute, only ${collected.size} out of 4 voted.`));
-  
+	var result = channel.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
+	//   .then(collected=> response.render(__dirname + "/index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
+		.then(collected=>{
+			var params = { username: "someuser",
+							 image_url:collected.first().attachments.first().url,
+							  image_message_id: collected.first().id,
+							  origin_id:request.body.message_id,
+							  type:determine_type(request.body.row_,request.body.columns_),
+							  time:collected.first().createdTimestamp,
 
+							   }
+	
+			console.log(params)
+	
+	
+			Prompt = new Entry(params)
+			Prompt.save()
+			response.render("index.ejs", params)
+			console.log('Rendering Failed.')
 
+			
+	
+	
+		}
+		)
+	  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
 
 
 
