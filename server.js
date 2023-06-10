@@ -98,7 +98,6 @@ client.login(process.env.token);
 app.get('/',async(request,response)=>{
 	const kittens = await Entry.find();
 	let heldKittens = kittens.slice(-6)
-	console.log(kittens[0].image_url)
     response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559",
 	items:heldKittens,image_message_id:null})
 }
@@ -113,7 +112,7 @@ app.listen(PORT,()=>{
     console.log(`This server is running on port ${PORT}`)
 })
 
-app.post("/addPrompt", (request,response)=>{
+app.post("/addPrompt",async (request,response)=>{
 
 	
 	// response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
@@ -127,6 +126,11 @@ app.post("/addPrompt", (request,response)=>{
 	channel.sendSlash('936929561302675456','imagine', a)
 	channel.send(a)
 
+
+
+	const kittens = await Entry.find();
+	let heldKittens = kittens.slice(-6)
+
 	// const filter = m => m.content.startsWith('!vote');
 	const filter = m => m.content.startsWith(`**${a}`)&&m.attachments.size==1&&m.author.id =='936929561302675456'
 
@@ -139,7 +143,8 @@ app.post("/addPrompt", (request,response)=>{
 		  				image_message_id: collected.first().id,
 		   				prompt:a,
 						type:'Original',
-						time:collected.first().createdTimestamp
+						time:collected.first().createdTimestamp,
+						items:heldKittens
 					}
 
 		console.log(params)
@@ -201,7 +206,8 @@ app.post("/checkmessage", async (request,response)=>{
 		}
 	  }
 
-	
+	  const kittens = await Entry.find();
+	let heldKittens = kittens.slice(-6)
 
 
 	
@@ -223,6 +229,7 @@ app.post("/checkmessage", async (request,response)=>{
 							  origin_id:request.body.message_id,
 							  type:determine_type(request.body.row_,request.body.columns_),
 							  time:collected.first().createdTimestamp,
+							  items:heldKittens
 
 							   }
 	
