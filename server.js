@@ -24,16 +24,6 @@ var a = ""
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-// let db,
-//     dbConnectionStr = process.env.DB_STRING,
-//     dbName = 'Midjourney'
-
-// MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
-//     .then(client => {
-//         console.log(`Connected to ${dbName} Database`)
-//         db = client.db(dbName)
-//     })
-
 
 const mongoose = require('mongoose');
 const { url } = require('node:inspector');
@@ -54,17 +44,14 @@ const midSchema = new mongoose.Schema({
 	username: {type:String},
 	prompt: {type:String},
 	image_url:{type:String},
-	image_message_id:{type:String}
+	image_message_id:{type:String},
+	type:{type:String},
+	origin_id:{type:String},
+	time:{type:String}
   });
 const Entry = mongoose.model('userInstruction', midSchema);
 
 
-// var Prompt = new Entry({ username: 'name_', image_url:'url_', image_message_id: 'message_id_', prompt:'prompt_'});
-
-
-
-// Prompt.save()
-// console.log(Prompt)
 
 
 app.use(express.urlencoded({
@@ -143,7 +130,10 @@ app.post("/addPrompt", (request,response)=>{
 		var params = { username: "someuser",
 		 				image_url:collected.first().attachments.first().url,
 		  				image_message_id: collected.first().id,
-		   				prompt:a}
+		   				prompt:a,
+						type:'Original',
+						time:collected.first().createdTimestamp
+					}
 
 		console.log(params)
 
@@ -163,17 +153,6 @@ app.post("/addPrompt", (request,response)=>{
 	
 
 
-function tester(){
-	console.log('testeris running')
-	
-
-	client.on('ready', () => {
-		console.log('client is ready to listen for messages')
-	const channel = client.channels.cache.get("1103168663617556571");
-	channel.send(a)}
-	)
-
-}
 
 
 
@@ -198,11 +177,22 @@ app.post("/checkmessage", async (request,response)=>{
 	
 	
 
-
 	const message = await channel.messages.fetch(request.body.message_id)
-	// console.log(message)
-	// console.log(message.components[0])
-	// console.log(message.components[0][0])
+
+
+	
+	function determine_type(row,column) {
+		if (column ===4){
+			return 'Reimagine'
+		}
+		if (row === 0) {
+		  return 'Upscale';
+		} else if (row === 1) {
+		  return 'Variation';
+		} else {
+		  return null;
+		}
+	  }
 
 	
 
@@ -210,6 +200,8 @@ app.post("/checkmessage", async (request,response)=>{
 	
 	// .then(message=>message.clickButton({ row: button_row, col: button_column}));
 	message.clickButton({ row:request.body.row_, col: request.body.columns_})
+
+
 
 
 
@@ -221,6 +213,10 @@ app.post("/checkmessage", async (request,response)=>{
 			var params = { username: "someuser",
 							 image_url:collected.first().attachments.first().url,
 							  image_message_id: collected.first().id,
+							  origin_id:request.body.message_id,
+							  type:determine_type(request.body.row_,request.body.columns_),
+							  time:collected.first().createdTimestamp,
+
 							   }
 	
 			console.log(params)
