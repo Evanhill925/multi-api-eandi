@@ -21,7 +21,8 @@ const PORT = 8001
 const { Client , Events} = require('discord.js-selfbot-v13');
 const { channel } = require('node:diagnostics_channel');
 var a = ""
-
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
 
 // let db,
 //     dbConnectionStr = process.env.DB_STRING,
@@ -71,8 +72,7 @@ app.use(express.urlencoded({
 }) )
 app.use(express.json());
 
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
+
 
 
 
@@ -103,8 +103,9 @@ client.login(process.env.token);
 
 
 app.get('/',(request,response)=>{
-    response.render("index.ejs")
-})
+    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
+}
+)
 
 
 
@@ -120,9 +121,9 @@ app.listen(PORT,()=>{
 app.post("/addPrompt", (request,response)=>{
 
 	
-	// response.render(__dirname + "/index2.html", {name:'collected.first().attachments.first().url',message_id: '1115790695245021274'})
+	response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
 
-	// console.log(adasdasdasd)()
+	console.log(adasdasdasd)()
 	
 	console.log(request.body)
 	let a = request.body.userInput
@@ -150,7 +151,8 @@ app.post("/addPrompt", (request,response)=>{
 
 		Prompt = new Entry(params)
 		Prompt.save()
-		response.render("index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id})
+		response.render("index.ejs", params)
+		
 
 
 	}
