@@ -99,7 +99,8 @@ app.get('/',async(request,response)=>{
 	const kittens = await Entry.find();
 	let heldKittens = kittens.slice(-6)
 	console.log(kittens[0].image_url)
-    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559",items:heldKittens})
+    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559",
+	items:heldKittens,image_message_id:null})
 }
 )
 
