@@ -46,6 +46,12 @@
     
         </div>
 
-    <script src='js/main.js'></script>
+    <script>
+        // stringify the data passed from router to ejs (within the EJS template only)
+        const sent_messageId = JSON.parse('<%- JSON.stringify(image_message_id) %>')
+    </script>
+        
+
+    <script src='main.js'></script>
 </body>
 </html>
