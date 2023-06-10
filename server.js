@@ -41,6 +41,8 @@ const { url } = require('node:inspector');
 
 db = main().catch(err => console.log(err));
 
+
+
 async function main() {
 	dbName = 'Midjourney'
   await mongoose.connect(process.env.DB_STRING);
@@ -102,17 +104,22 @@ client.login(process.env.token);
 
 
 
-app.get('/',(request,response)=>{
-    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
+
+
+
+
+app.get('/',async(request,response)=>{
+	const kittens = await Entry.find();
+	let heldKittens = kittens.slice(-6)
+	console.log(kittens[0].image_url)
+    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559",items:heldKittens})
 }
 )
 
 
 
 
-// app.get('/main.js',(request,response)=>{
-//     response.sendFile(__dirname + "/main.js")
-// })
+
 
 app.listen(PORT,()=>{
     console.log(`This server is running on port ${PORT}`)
@@ -226,9 +233,7 @@ app.post("/checkmessage", async (request,response)=>{
 //   .catch(collected => console.log(`After a minute, only ${collected.size} out of 4 voted.`));
   
 
-//   .then(response => {
-// 	window.location.reload(true)
-//   })
+
 
 
 

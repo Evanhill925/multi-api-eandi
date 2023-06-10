@@ -1,6 +1,7 @@
 body{
-    background-color: gray;
+  background-color: rgba(169, 169, 169, 0.288);
 }
+
 button {
     display: block;
     margin-left: auto;
@@ -27,3 +28,21 @@ button {
     max-width: 572px;
     max-height: 600px;
   }
+  
+  .yellow
+  {
+    display: block;
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+  }
+
+  .listContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
