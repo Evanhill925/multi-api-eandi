@@ -104,6 +104,23 @@ app.get('/',async(request,response)=>{
 )
 
 
+app.post('/image',async(request,response)=>{
+	const kittens = await Entry.find();
+	let heldKittens = kittens.slice(-6)
+
+
+	const primary_image =await Entry.findOne({ image_message_id: request.body.message_id }).exec();
+	console.log(primary_image)
+	primary_url = primary_image.image_url
+	console.log(request.body.message_id)
+	console.log('-----')
+
+    response.render("index.ejs", {image_url:primary_url,
+	items:heldKittens,image_message_id:request.body.message_id})
+}
+)
+
+
 
 
 
@@ -175,9 +192,9 @@ app.post("/addPrompt",async (request,response)=>{
 
 app.post("/checkmessage", async (request,response)=>{
 
-
+	console.log('here')
 	console.log(request.body)
-	// console.log(request.)
+	// console.log(request)
 
 
 	var targetmessage = request.body.message_id
@@ -239,7 +256,6 @@ app.post("/checkmessage", async (request,response)=>{
 			Prompt = new Entry(params)
 			Prompt.save()
 			response.render("index.ejs", params)
-			console.log('Rendering Failed.')
 
 			
 	
@@ -250,7 +266,6 @@ app.post("/checkmessage", async (request,response)=>{
 
 
 
-	console.log('does this code ever excute?')
 
 
 	 

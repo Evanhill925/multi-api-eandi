@@ -2,7 +2,6 @@
 
 
 console.log(sent_messageId)
-console.log('freak leash')
 
 
 async function pressButton(row,column) {
@@ -11,27 +10,54 @@ async function pressButton(row,column) {
                 row_:row,
                 columns_ :column
             }
-
-
-
-
-    try {
-      const response = await fetch("http://localhost:8001/checkmessage", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
-      const result = await response;
-      console.log("Success:", result);
-    } catch (error) {
+    try{
+      post(path="http://localhost:8001/checkmessage",params=data)
+    }
+   catch (error) {
       console.error("Error:", error);
     }
-  }
-  
 
+  }
+
+async function get_image(row,column) {
+    var data = { channel_id:'1103168663617556571',
+    // HARDCODED FRANKENSTEIN
+                message_id:'1117586354545627156',
+            }
+    try{
+      post(path="http://localhost:8001/image",params=data)
+    }
+   catch (error) {
+      console.error("Error:", error);
+    }}
+
+
+
+
+
+  
+  function post(path ,params,method='post') {
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less verbose if you use one.
+    const form = document.createElement('form');
+    form.method = method;
+    form.action = path;
+  
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = key;
+        hiddenField.value = params[key];
+  
+        form.appendChild(hiddenField);
+      }
+    }
+  
+    document.body.appendChild(form);
+    form.submit();
+  }
 
 
   
@@ -61,4 +87,6 @@ document.getElementById("six").addEventListener("click", ()=> pressButton(1,0));
 document.getElementById("seven").addEventListener("click", ()=> pressButton(1,1));
 document.getElementById("eight").addEventListener("click", ()=> pressButton(1,2));
 document.getElementById("nine").addEventListener("click", ()=> pressButton(1,3));
+
+document.getElementById("TEST").addEventListener("click", ()=> get_image(1,3));
 
