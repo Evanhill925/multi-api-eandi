@@ -24,8 +24,8 @@
                 </div>
                 
                 <div id="buttons">
-                <button id="one">U1</button>
-                 <button id="two">U2</button>
+                <button id="one" method="post" action="/checkmessage">U1</button>
+                <button id="two" method="post" action="/checkmessage">U2</button>
                  <button id="three">U3</button>
                  <button id="four">U4</button>
                  <button id="five">↻</button>
@@ -42,6 +42,19 @@
         <img class ="yellow" src=<%= items[i].image_url %>>
         <% } %>
         </div>
+
+        <div class="listContainer2">
+            <% for(let i=0; i < items.length; i++) {%>
+            <form action="/image" method="post">
+                <input type="image" src=<%= items[i].image_url %> alt=<%= items[i].prompt %> />
+                <input type="hidden" name="message_id" value= <%= items[i].image_message_id %>>
+                </form>
+
+
+            <% } %>
+         
+            </div>
+    
 
     <script>
         // stringify the data passed from router to ejs (within the EJS template only)

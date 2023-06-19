@@ -109,7 +109,7 @@ app.post('/image',async(request,response)=>{
 	let heldKittens = kittens.slice(-6)
 
 
-	const primary_image =await Entry.findOne({ image_message_id: request.body.message_id }).exec();
+	const primary_image = await Entry.findOne({ image_message_id: request.body.message_id }).exec();
 	console.log(primary_image)
 	primary_url = primary_image.image_url
 	console.log(request.body.message_id)
