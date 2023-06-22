@@ -11,3 +11,10 @@ add small logo on web path
                 <img src=<%= name %> >
     
             </div>
+
+
+            <div class="listContainer">
+                <% for(let i=0; i < items.length; i++) {%>
+                <img class ="yellow" src=<%= items[i].image_url %>>
+                <% } %>
+                </div>
