@@ -2,6 +2,19 @@ body{
   background-color:#E6F2FF;
 }
 
+
+
+@font-palette-values --myPalette {
+  font-family: "Nabla";
+  base-palette: 2;
+}
+h1 {
+  font-family: "Nabla";
+  font-palette: --myPalette;
+  }
+
+
+
 button {
     display: block;
     margin-left: auto;
