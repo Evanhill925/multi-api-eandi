@@ -98,8 +98,13 @@ client.login(process.env.token);
 app.get('/',async(request,response)=>{
 	const kittens = await Entry.find();
 	let heldKittens = kittens.slice(-6)
-    response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559",
-	items:heldKittens,image_message_id:null})
+
+	const default_image = await Entry.findOne({ image_message_id: '1121497222287200366' }).exec();
+	default_url = default_image.image_url
+
+
+
+    response.render("index.ejs", {image_url:default_url,items:heldKittens,image_message_id:'1121497222287200366'})
 }
 )
 
@@ -137,7 +142,7 @@ app.post("/addPrompt",async (request,response)=>{
 	// console.log(adasdasdasd)()
 	
 	console.log(request.body)
-	let a = request.body.userInput.trim()
+	let a = request.body.userInput.trim() + request.body.model
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
@@ -247,7 +252,6 @@ app.post("/checkmessage", async (request,response)=>{
 							  type:determine_type(request.body.row_,request.body.columns_),
 							  time:collected.first().createdTimestamp,
 							  items:heldKittens
-
 							   }
 	
 			console.log(params)
@@ -263,11 +267,6 @@ app.post("/checkmessage", async (request,response)=>{
 		}
 		)
 	  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
-
-
-
-
-
 	 
 	});
 
