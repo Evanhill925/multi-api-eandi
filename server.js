@@ -142,7 +142,8 @@ app.post("/addPrompt",async (request,response)=>{
 	// console.log(adasdasdasd)()
 	
 	console.log(request.body)
-	let a = request.body.userInput.trim() + request.body.model
+	// let a = request.body.userInput.trim() + request.body.model
+	var a = `${request.body.userInput.trim()} ${request.body.model}`;
 	console.log(a)
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
@@ -282,10 +283,10 @@ function message_verify(mes){
 	console.log(mes.first().author);
 	console.log(mes.first().content);
 	var message = mes.first();
-	// image = message.attachments.first()?.url
+	// image = message.attachments.first().url
 	console.log(`Message from ${message.author.username}: ${message.content}`);
 	console.log('------');
-	return message.attachments.first()?.url
+	return message.attachments.first().url
 
 }
 
@@ -310,5 +311,5 @@ function message_verify(mes){
 
 // channell.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
 //   .then(collected => console.log(collected))
-//   .catch(collected => console.log(`After a minute, only ${collected.first().attachments.first()?.url} out of 4 voted.`));
+//   .catch(collected => console.log(`After a minute, only ${collected.first().attachments.first().url} out of 4 voted.`));
 // })
