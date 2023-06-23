@@ -7,6 +7,8 @@ async function pressButton(row,column) {
                 row_:row,
                 columns_ :column
             }
+    show()
+
     try{
       post(path="/checkmessage",params=data)
     }
@@ -16,7 +18,23 @@ async function pressButton(row,column) {
 
   }
 
+document.getElementById("myform").addEventListener("submit", function(event) {
+  show()
+});
 
+
+
+
+
+
+function show() {
+    /* Access image by id and change
+    the display property to block*/
+    document.getElementById('loading')
+        .style.display = "block";
+        document.getElementById('blue')
+        .style.display = "none";
+}
 
 
 

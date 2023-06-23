@@ -13,7 +13,7 @@
       </header>
 <div class="bodyContainer" style="text-align: center;">
     <h1 class="title">Imagine</h1>
-    <form action="/addPrompt" method="post">
+    <form action="/addPrompt" method="post" id='myform'>
         <input type="text" placeholder="Describe an image" id="input" name="userInput" required style="width: 400px;"><br><br>
         <select name="model" required>
           <option value=" --v 5.1">Midjourney (classic)</option>
@@ -29,6 +29,13 @@
         <div id="blue">
             <a href="<%= image_url %>"><img src="<%= image_url %>" id="largeImage"></a>
         </div>
+
+            <img id="loading"
+            src="https://cdn.discordapp.com/attachments/109499206254739456/1121911258816446474/WROBOT.png"
+            alt="Please Wait" />
+
+
+
         <div id="buttons">
             <button id="one" method="post" action="/checkmessage">U1</button>
             <button id="two" method="post" action="/checkmessage">U2</button>
@@ -50,20 +57,20 @@
         <% } %>
     
     <!-- add copyright -->
-    <div class="footer">
+    <!-- <div class="footer">
         <p>MidjourneyWeb is a web interface for <a href="/">Midjourney</a>.<br> </p>
-    </div>
+    </div> -->
     <script>
       // stringify the data passed from router to ejs (within the EJS template only)
       const sent_messageId = JSON.parse('<%- JSON.stringify(image_message_id) %>')
       const imageType = JSON.parse('<%- JSON.stringify(type) %>')
       
     // Check if image type is null
-    if (imageType === null) {
+    if (imageType === 'Upscale') {
     // Hide the buttons div
     document.getElementById("buttons").style.display = "none";  
 }
-
+// else{ document.getElementById("buttons").style.display = "block"}
   </script>
     <script src="main.js"></script>
 </div>

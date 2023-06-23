@@ -34,6 +34,7 @@ async function main() {
 
 }
 
+
 const midSchema = new mongoose.Schema({
 	username: {type:String},
 	prompt: {type:String},
@@ -162,12 +163,12 @@ app.post("/checkmessage", async (request,response)=>{
 
 
 	function determine_type(row,column) {
-		if (column ===4){
+		if (column ==='4'){
 			return 'Reimagine'
 		}
-		if (row === 0) {
+		if (row === '0') {
 		  return 'Upscale';
-		} else if (row === 1) {
+		} else if (row === '1') {
 		  return 'Variation';
 		} else {
 		  return null;
