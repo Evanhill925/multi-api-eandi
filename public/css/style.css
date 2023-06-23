@@ -1,14 +1,10 @@
 body {
-  background-color: var(--body-bg-color, #E6F2FF);
+  background-color: #E6F2FF;
 }
 
-:root {
-  --font-family: "Nabla";
-  --base-palette: 2;
-  --button-bg-color: #66B2FF;
-  --button-text-color: #333333;
-  --button-border-color: #66B2FF;
-  --button-border-radius: 5px;
+@font-palette-values --myPalette {
+  font-family: "Nabla";
+  base-palette: 2;
 }
 
 footer {
@@ -17,10 +13,10 @@ footer {
 }
 
 #subButton {
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  border-color: var(--button-border-color);
-  border-radius: var(--button-border-radius);
+  background-color: #66B2FF;
+  color: #333333;
+  border-color: #66B2FF;
+  border-radius: 5px;
 }
 
 button {
@@ -30,10 +26,10 @@ button {
   width: 60px;
   height: 60px;
   display: inline;
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  border-color: var(--button-border-color);
-  border-radius: var(--button-border-radius);
+  background-color: #66B2FF;
+  color: #333333;
+  border-color: #66B2FF;
+  border-radius: 5px;
 }
 
 #buttons {
