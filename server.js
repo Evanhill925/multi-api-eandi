@@ -29,9 +29,6 @@ async function main() {
 	dbName = 'Midjourney'
   await mongoose.connect(process.env.DB_STRING);
   console.log(`Connected to ${dbName} Database`);
-
-  
-
 }
 
 
@@ -53,11 +50,6 @@ app.use(express.urlencoded({
 	extended:true
 }) )
 app.use(express.json());
-
-
-
-
-
 app.use(cors())
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -82,12 +74,21 @@ const client = new Client({
 client.login(process.env.token);
 
 
+
 app.get('/',async(request,response)=>{
 	let storedDBItems = await dbItems()
 	console.log(storedDBItems)
 	const default_image = await Entry.findOne({ image_message_id: '1121497222287200366' }).exec();
+	var params = { username: "someuser",
+		 				image_url:default_image.image_url,
+		  				image_message_id: default_image.id,
+		   				prompt:default_image.prompt,
+						type:default_image.type,
+						items:storedDBItems
+						
+					}
 	default_url = default_image.image_url
-	response.render("index.ejs", {image_url:default_url,items:storedDBItems,image_message_id:'1121497222287200366', type:default_image.type})
+	response.render("index.ejs", params)
 })
 
 app.get('/gallery',async(request,response)=>{
@@ -100,11 +101,17 @@ app.post('/image',async(request,response)=>{
 	let storedDBItems = await dbItems()
 	const primary_image = await Entry.findOne({ image_message_id: request.body.message_id }).exec();
 	console.log(primary_image)
-	primary_url = primary_image.image_url
+	var params = { username: "someuser",
+		 				image_url:primary_image.image_url,
+		  				image_message_id: primary_image.id,
+		   				prompt:primary_image.prompt,
+						type:primary_image.type,
+						items:storedDBItems
+						
+					}
 	console.log(request.body.message_id)
 	console.log('-----')
-	response.render("index.ejs", {image_url:primary_url,
-	items:storedDBItems,image_message_id:request.body.message_id, type:primary_image.type})
+	response.render("index.ejs", {params})
 })
 
 
@@ -189,7 +196,8 @@ app.post("/checkmessage", async (request,response)=>{
 							  origin_id:request.body.message_id,
 							  type:determine_type(request.body.row_,request.body.columns_),
 							  time:collected.first().createdTimestamp,
-							  items:storedDBItems
+							  items:storedDBItems,
+							  prompt:""
 							   }
 	
 			console.log(params)
@@ -202,45 +210,3 @@ app.post("/checkmessage", async (request,response)=>{
 	  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
 	 });
 
-
-
-
-	
-
-
-
-
-function message_verify(mes){
-	console.log(mes.first().author);
-	console.log(mes.first().content);
-	var message = mes.first();
-	// image = message.attachments.first().url
-	console.log(`Message from ${message.author.username}: ${message.content}`);
-	console.log('------');
-	return message.attachments.first().url
-
-}
-
-
-
-// client.on('ready', () => {
-// 	console.log('client is ready to listen for messages')
-// const channell = client.channels.cache.get("1103168663617556571");
-// var button_column = 3
-// var button_row = 1
-
-// const message =  channell.messages.fetch('1115144157342736464').then(collected => 
-// 																	collected.clickButton({ row: button_row, col: button_column})
-// 																	)
-
-
-
-// console.log(message)
-// console.log(`**${a}`)
-// const filter = m => m.content.startsWith(`**${a}`)&&m.attachments.size==1&&m.author.id =='936929561302675456'&&m.reference.messageId == '1115144157342736464'
-
-
-// channell.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
-//   .then(collected => console.log(collected))
-//   .catch(collected => console.log(`After a minute, only ${collected.first().attachments.first().url} out of 4 voted.`));
-// })
