@@ -1,41 +1,58 @@
-body{
-  background-color:#E6F2FF;
-}
 
-
-
-@font-palette-values --myPalette {
-  font-family: "Nabla";
-  base-palette: 2;
-}
-
+  body {
+    background-color: #E6F2FF;
+  }
+  
+  @font-palette-values --myPalette {
+    font-family: "Nabla";
+    base-palette: 2;
+  }
+  
 #loading {
   display: none;
 }
 
-button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+
+  footer {
+      position: relative;
+      margin-top: -150px;  /* negative value of footer height */
+      height: 150px;
+      clear: both;
+  } 
+  
+  
+  #subButton {
+    background-color: #66B2FF;
+    color: #333333;
+    border-color: #66B2FF;
+    border-radius: 5px;
+  }
+  
+  #buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  button {
     width: 60px;
     height: 60px;
-    display: inline;
     background-color: #66B2FF;
-    color: #333333; 
+    color: #333333;
     border-color: #66B2FF;
-
-}
-
-#buttons{
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    max-width: 575px;
+    border-radius: 5px;
+    margin: 0 5px;
+  }
+  
+  img#largeImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
     max-height: 600px;
   }
-
-  img {
-    display: block;
+  
+  #blue {
+    text-align: center; /* Center the contents horizontally */
     margin-left: auto;
     margin-right: auto;
     width: 50%;
@@ -43,9 +60,7 @@ button {
     max-height: 600px;
   }
   
-  .yellow
-  {
-    
+  .yellow {
     justify-content: center;
     align-items: row;
     display: inline;
@@ -55,21 +70,14 @@ button {
     height: 200px;
     margin: 10px;
   }
-
+  
   .listContainer {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: row;
-
     margin-left: auto;
     margin-right: auto;
     width: 50%;
   }
-
-.title {
-  font-family:"Nabla",system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-palette: --myPalette;
-  color : #333333;
-}
