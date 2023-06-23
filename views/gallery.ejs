@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MidjourneyWeb</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <%- include('../views/partials/header'); %>
+    </header>
+    
+
+    <div class="listContainer">
+        <% for(let i=0; i < items.length; i++) { %>
+        <form action="/image" method="post">
+            <input type="image" class="yellow" src="<%= items[i].image_url %>" <% if (items[i].prompt) { %>title="<%= items[i].prompt %>"<% } %> />
+            <input type="hidden" name="message_id" value="<%= items[i].image_message_id %>">
+        </form>
+        <% } %>
+    <!-- add copyright -->
+    <div class="footer">
+        <p>MidjourneyWeb is a web interface for <a href="https://www.midjourney.com/home/">Midjourney</a> </p>
+    </div>
+</div>
+</body>
+</html>

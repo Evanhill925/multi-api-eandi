@@ -9,9 +9,17 @@ body{
   base-palette: 2;
 }
 
+footer{
+  display: flex;
+  justify-content: center;
+}
 
-
-
+#subButton{
+  background-color: #66B2FF;
+  color: #333333; 
+  border-color: #66B2FF;
+  border-radius: 5px;
+}
 button {
     display: block;
     margin-left: auto;
@@ -22,6 +30,7 @@ button {
     background-color: #66B2FF;
     color: #333333; 
     border-color: #66B2FF;
+    border-radius: 5px;
 
 }
 
@@ -83,3 +92,5 @@ button {
   color : #333333;
   font-palette: --myPalette;
 }
+
+navbar navbar-expand-lg navbar-light bg-light

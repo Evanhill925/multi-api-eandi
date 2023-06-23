@@ -1,5 +1,5 @@
 console.log(sent_messageId)
-
+console.log(imageType)
 
 async function pressButton(row,column) {
     var data = { channel_id:'1103168663617556571',
@@ -65,21 +65,6 @@ async function get_image(row,column) {
 // fetch(url)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.getElementById("one").addEventListener("click", ()=> pressButton(0,0));
 document.getElementById("two").addEventListener("click", ()=> pressButton(0,1));
 document.getElementById("three").addEventListener("click", ()=> pressButton(0,2));
@@ -89,5 +74,5 @@ document.getElementById("six").addEventListener("click", ()=> pressButton(1,0));
 document.getElementById("seven").addEventListener("click", ()=> pressButton(1,1));
 document.getElementById("eight").addEventListener("click", ()=> pressButton(1,2));
 document.getElementById("nine").addEventListener("click", ()=> pressButton(1,3));
-document.getElementById("TEST").addEventListener("click", ()=> get_image(1,3));
+
 

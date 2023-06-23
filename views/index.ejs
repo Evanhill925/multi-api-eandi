@@ -8,19 +8,22 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <header>
+        <%- include('../views/partials/header'); %>
+      </header>
 <div class="bodyContainer" style="text-align: center;">
     <h1 class="title">Imagine</h1>
     <form action="/addPrompt" method="post">
-        <input type="text" placeholder="prompt" id="input" name="userInput" required>
+        <input type="text" placeholder="Describe an image" id="input" name="userInput" required style="width: 400px;"><br><br>
         <select name="model" required>
-            <option value=" --v 5.1">Midjourney (classic)</option>
-            <option value=" --niji 5">Niji (anime)</option>
-            <option value=" --niji 5 --style cute">Niji (anime) - cute</option>
-            <option value=" --niji 5 --style expressive">Niji (anime) - expressive</option>
-            <option value=" --niji 5 --style scenic">Niji (anime) - scenic</option>
-          </select>
-        <input type="submit" value="generate image">
-    </form>
+          <option value=" --v 5.1">Midjourney (classic)</option>
+          <option value=" --niji 5">Niji (anime)</option>
+          <option value=" --niji 5 --style cute">Niji (anime) - cute</option>
+          <option value=" --niji 5 --style expressive">Niji (anime) - expressive</option>
+          <option value=" --niji 5 --style scenic">Niji (anime) - scenic</option>
+        </select>
+        <input type="submit" value="Generate Image" id="subButton">
+      </form>
     <hr>
     <div>
         <div id="blue">
@@ -29,13 +32,13 @@
         <div id="buttons">
             <button id="one" method="post" action="/checkmessage">U1</button>
             <button id="two" method="post" action="/checkmessage">U2</button>
-            <button id="three">U3</button>
-            <button id="four">U4</button>
-            <button id="five">↻</button>
-            <button id="six">V1</button>
-            <button id="seven">V2</button>
-            <button id="eight">V3</button>
-            <button id="nine">V4</button>
+            <button id="three" method="post" action="/checkmessage">U3</button>
+            <button id="four" method="post" action="/checkmessage">U4</button>
+            <button id="five" method="post" action="/checkmessage">↻</button>
+            <button id="six" method="post" action="/checkmessage">V1</button>
+            <button id="seven" method="post" action="/checkmessage">V2</button>
+            <button id="eight" method="post" action="/checkmessage">V3</button>
+            <button id="nine" method="post" action="/checkmessage">V4</button>
         </div>
     </div>
     <div class="listContainer">
@@ -45,15 +48,24 @@
             <input type="hidden" name="message_id" value="<%= items[i].image_message_id %>">
         </form>
         <% } %>
-    </div>
+    
     <!-- add copyright -->
     <div class="footer">
-        <p>MidjourneyWeb is a web interface for <a href="http://34.210.232.232:8001/">Midjourney</a>.<br> </p>
+        <p>MidjourneyWeb is a web interface for <a href="/">Midjourney</a>.<br> </p>
     </div>
     <script>
       // stringify the data passed from router to ejs (within the EJS template only)
       const sent_messageId = JSON.parse('<%- JSON.stringify(image_message_id) %>')
+      const imageType = JSON.parse('<%- JSON.stringify(type) %>')
+      
+    // Check if image type is null
+    if (imageType === null) {
+    // Hide the buttons div
+    document.getElementById("buttons").style.display = "none";  
+}
+
   </script>
     <script src="main.js"></script>
+</div>
 </body>
 </html>

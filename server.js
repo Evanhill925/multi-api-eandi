@@ -1,19 +1,9 @@
 const dotenv = require('dotenv');
 const fs = require('node:fs');
 const path = require('node:path');
-// const MongoClient = require('mongodb').MongoClient
-
-
-
-
-
 dotenv.config();
-
-
-
 var cors = require('cors')
 const bodyParser = require('body-parser')
-
 const express = require("express");
 const res = require('express/lib/response');
 const app = express()
@@ -23,13 +13,15 @@ const { channel } = require('node:diagnostics_channel');
 var a = ""
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-
-
 const mongoose = require('mongoose');
 const { url } = require('node:inspector');
-
-
 db = main().catch(err => console.log(err));
+
+async function dbItems() {
+const pulledFromDb = await Entry.find();
+	let heldItems = pulledFromDb.slice(-6).reverse()
+	return heldItems
+}
 
 
 
@@ -89,45 +81,30 @@ const client = new Client({
 client.login(process.env.token);
 
 
-
-
-
-
-
-
 app.get('/',async(request,response)=>{
-	const kittens = await Entry.find();
-	let heldKittens = kittens.slice(-6)
-
+	let storedDBItems = await dbItems()
+	console.log(storedDBItems)
 	const default_image = await Entry.findOne({ image_message_id: '1121497222287200366' }).exec();
 	default_url = default_image.image_url
+	response.render("index.ejs", {image_url:default_url,items:storedDBItems,image_message_id:'1121497222287200366', type:default_image.type})
+})
 
-
-
-    response.render("index.ejs", {image_url:default_url,items:heldKittens,image_message_id:'1121497222287200366'})
-}
-)
-
+app.get('/gallery',async(request,response)=>{
+	const pulledFromDb = await Entry.find();
+	let fiftyHeldItems = pulledFromDb.slice(-51).reverse()
+	response.render("gallery.ejs", {items:fiftyHeldItems})
+})
 
 app.post('/image',async(request,response)=>{
-	const kittens = await Entry.find();
-	let heldKittens = kittens.slice(-6)
-
-
+	let storedDBItems = await dbItems()
 	const primary_image = await Entry.findOne({ image_message_id: request.body.message_id }).exec();
 	console.log(primary_image)
 	primary_url = primary_image.image_url
 	console.log(request.body.message_id)
 	console.log('-----')
-
-    response.render("index.ejs", {image_url:primary_url,
-	items:heldKittens,image_message_id:request.body.message_id})
-}
-)
-
-
-
-
+	response.render("index.ejs", {image_url:primary_url,
+	items:storedDBItems,image_message_id:request.body.message_id, type:primary_image.type})
+})
 
 
 app.listen(PORT,()=>{
@@ -135,28 +112,16 @@ app.listen(PORT,()=>{
 })
 
 app.post("/addPrompt",async (request,response)=>{
-
-	
 	// response.render("index.ejs", {image_url:"https://media.discordapp.net/attachments/1103168663617556571/1116864121149849690/lilhelper_fox_man_hunted_webcam_99eba765-c8f8-4270-aee4-0f1dc0519c5e.png?width=559&height=559"})
-
 	// console.log(adasdasdasd)()
-	
 	console.log(request.body)
-	// let a = request.body.userInput.trim() + request.body.model
-	var a = `${request.body.userInput.trim()} ${request.body.model}`;
-	console.log(a)
+	let a = request.body.userInput.trim() + request.body.model
 	const channel = client.channels.cache.get('1103168663617556571');
 	channel.sendSlash('936929561302675456','imagine', a)
 	channel.send(a)
-
-
-
-	const kittens = await Entry.find();
-	let heldKittens = kittens.slice(-6)
-
+	let storedDBItems = await dbItems()
 	// const filter = m => m.content.startsWith('!vote');
 	const filter = m => m.content.startsWith(`**${a}`)&&m.attachments.size==1&&m.author.id =='936929561302675456'
-
 // Errors: ['time'] treats ending because of the time limit as an error
  var result = channel.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
 //   .then(collected=> response.render(__dirname + "/index.ejs", {name:collected.first().attachments.first().url,message_id: collected.first().id}))
@@ -167,31 +132,17 @@ app.post("/addPrompt",async (request,response)=>{
 		   				prompt:a,
 						type:'Original',
 						time:collected.first().createdTimestamp,
-						items:heldKittens
+						items:storedDBItems
 					}
 
 		console.log(params)
-
-
 		Prompt = new Entry(params)
 		Prompt.save()
 		response.render("index.ejs", params)
-		
-
-
-	}
-	)
+		})
   .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
-
-
-	})
+})
 	
-
-
-
-
-
-
 
 	// response.redirect(`/?lastMessageId=${channel.lastMessageId}`))})
 
@@ -201,21 +152,15 @@ app.post("/checkmessage", async (request,response)=>{
 	console.log('here')
 	console.log(request.body)
 	// console.log(request)
-
-
 	var targetmessage = request.body.message_id
 	// const test_channel = '1103168663617556571'
 
 	const channel = client.channels.cache.get('1103168663617556571');
 	console.log(targetmessage)
-
-	
-	
-
 	const message = await channel.messages.fetch(request.body.message_id)
 
 
-	
+
 	function determine_type(row,column) {
 		if (column ===4){
 			return 'Reimagine'
@@ -229,18 +174,9 @@ app.post("/checkmessage", async (request,response)=>{
 		}
 	  }
 
-	  const kittens = await Entry.find();
-	let heldKittens = kittens.slice(-6)
-
-
-	
+	  let storedDBItems = await dbItems()
 	// .then(message=>message.clickButton({ row: button_row, col: button_column}));
 	message.clickButton({ row:request.body.row_, col: request.body.columns_})
-
-
-
-
-
 	const filter = m => m.attachments.size==1&&m.author.id =='936929561302675456'&&m.reference.messageId == request.body.message_id
 
 	var result = channel.awaitMessages({ filter, max: 1, time: 120_000, errors: ['time'] })
@@ -252,7 +188,7 @@ app.post("/checkmessage", async (request,response)=>{
 							  origin_id:request.body.message_id,
 							  type:determine_type(request.body.row_,request.body.columns_),
 							  time:collected.first().createdTimestamp,
-							  items:heldKittens
+							  items:storedDBItems
 							   }
 	
 			console.log(params)
@@ -261,15 +197,9 @@ app.post("/checkmessage", async (request,response)=>{
 			Prompt = new Entry(params)
 			Prompt.save()
 			response.render("index.ejs", params)
-
-			
-	
-	
-		}
-		)
+		})
 	  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
-	 
-	});
+	 });
 
 
 
