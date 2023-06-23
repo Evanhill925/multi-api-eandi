@@ -1,118 +1,241 @@
-body {
-  background-color: #E6F2FF;
+/* body{
+  background-color:#E6F2FF;
 }
+
+
 
 @font-palette-values --myPalette {
   font-family: "Nabla";
   base-palette: 2;
 }
 
-footer {
+footer{
   display: flex;
   justify-content: center;
 }
 
-#subButton {
+#subButton{
   background-color: #66B2FF;
-  color: #333333;
+  color: #333333; 
   border-color: #66B2FF;
   border-radius: 5px;
 }
-
 button {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60px;
-  height: 60px;
-  display: inline;
-  background-color: #66B2FF;
-  color: #333333;
-  border-color: #66B2FF;
-  border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60px;
+    height: 60px;
+    display: inline;
+    background-color: #66B2FF;
+    color: #333333; 
+    border-color: #66B2FF;
+    border-radius: 5px;
+
 }
 
-#buttons {
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  max-width: 575px;
-  max-height: 600px;
-}
-
-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  max-width: 600px;
-  max-height: 600px;
-}
-
-#largeImage {
-  min-height: 600px;
-  min-width: 600px;
-}
-
-#blue {
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  max-width: 600px;
-  max-height: 600px;
-}
-
-.yellow {
-  justify-content: center;
-  align-items: row;
-  display: inline;
-  margin-left: auto;
-  margin-right: auto;
-  width: 200px;
-  height: 200px;
-  margin: 10px;
-}
-
-.listContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: row;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
-/* Media Queries */
-
-@media only screen and (max-width: 768px) {
-  /* Adjust styles for smaller screens */
-  #buttons {
-    width: 80%;
-    max-width: 400px;
-    max-height: none;
+#buttons{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 575px;
+    max-height: 600px;
   }
 
   img {
-    width: 80%;
-    max-width: 400px;
-    max-height: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  #largeImage{
+    min-height: 600px;
+    min-width: 600px;
+  }
+  #blue{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 600px;
+    max-height: 600px;
   }
 
-  #blue {
-    width: 80%;
-    max-width: 400px;
-    max-height: none;
-  }
-
-  .yellow {
-    width: 150px;
-    height: 150px;
+  .yellow
+  {
+    
+    justify-content: center;
+    align-items: row;
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
   }
 
   .listContainer {
-    width: 80%;
-    max-width: 400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: row;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  } */
+
+  /* body {
+    background-color: #E6F2FF;
   }
-}
+  
+  @font-palette-values --myPalette {
+    font-family: "Nabla";
+    base-palette: 2;
+  }
+  
+  footer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #subButton {
+    background-color: #66B2FF;
+    color: #333333;
+    border-color: #66B2FF;
+    border-radius: 5px;
+  }
+  
+  #buttons {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    margin-top: 5px;
+    width: 440px;
+  }
+  
+  button {
+    flex: 1; 
+    height: 40px;
+    width: 70%;
+    background-color: #66B2FF;
+    color: #333333;
+    border-color: #66B2FF;
+    border-radius: 5px;
+    margin: 0 5px; 
+  
+  }
+  
+  img#largeImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 600px;
+  }
+  
+  #blue {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  
+  .yellow {
+    justify-content: center;
+    align-items: row;
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+  }
+  
+  .listContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  } */
+
+  body {
+    background-color: #E6F2FF;
+  }
+  
+  @font-palette-values --myPalette {
+    font-family: "Nabla";
+    base-palette: 2;
+  }
+  
+  footer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #subButton {
+    background-color: #66B2FF;
+    color: #333333;
+    border-color: #66B2FF;
+    border-radius: 5px;
+  }
+  
+  #buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  button {
+    width: 60px;
+    height: 60px;
+    background-color: #66B2FF;
+    color: #333333;
+    border-color: #66B2FF;
+    border-radius: 5px;
+    margin: 0 5px;
+  }
+  
+  img#largeImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 600px;
+  }
+  
+  #blue {
+    text-align: center; /* Center the contents horizontally */
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  
+  .yellow {
+    justify-content: center;
+    align-items: row;
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+  }
+  
+  .listContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
