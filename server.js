@@ -81,7 +81,7 @@ app.get('/',async(request,response)=>{
 	const default_image = await Entry.findOne({ image_message_id: '1121497222287200366' }).exec();
 	var params = { username: "someuser",
 		 				image_url:default_image.image_url,
-		  				image_message_id: default_image.id,
+		  				image_message_id: default_image.image_message_id,
 		   				prompt:default_image.prompt,
 						type:default_image.type,
 						items:storedDBItems
@@ -103,15 +103,15 @@ app.post('/image',async(request,response)=>{
 	console.log(primary_image)
 	var params = { username: "someuser",
 		 				image_url:primary_image.image_url,
-		  				image_message_id: primary_image.id,
-		   				prompt:primary_image.prompt,
-						type:primary_image.type,
-						items:storedDBItems
+		  				image_message_id: primary_image.image_message_id,
+						  prompt:primary_image.prompt,
+						  type:primary_image.type,
+						  items:storedDBItems
 						
 					}
-	console.log(request.body.message_id)
+	console.log(params)
 	console.log('-----')
-	response.render("index.ejs", {params})
+	response.render("index.ejs", params)
 })
 
 

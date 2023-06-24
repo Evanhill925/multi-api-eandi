@@ -88,3 +88,16 @@
     width: 50%;
 
   }
+  .listContainerGallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: row;
+    margin-left: auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-right: auto;
+    width: 50%;
+
+  }

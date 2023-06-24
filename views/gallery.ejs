@@ -13,7 +13,7 @@
     </header>
     
 
-    <div class="listContainer">
+    <div class="listContainerGallery">
         <% for(let i=0; i < items.length; i++) { %>
         <form action="/image" method="post">
             <input type="image" class="yellow" src="<%= items[i].image_url %>" <% if (items[i].prompt) { %>title="<%= items[i].prompt %>"<% } %> />
