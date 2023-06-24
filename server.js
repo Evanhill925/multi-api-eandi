@@ -39,7 +39,8 @@ const midSchema = new mongoose.Schema({
 	image_message_id:{type:String},
 	type:{type:String},
 	origin_id:{type:String},
-	time:{type:String}
+	time:{type:String},
+	quadrant:{type:String}
   });
 const Entry = mongoose.model('userInstruction', midSchema);
 
@@ -148,7 +149,8 @@ app.post("/addPrompt",async (request,response)=>{
 		Prompt.save()
 		response.render("index.ejs", params)
 		})
-  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
+  .catch(collected =>{ console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`)
+						response.redirect('/')																				});
 })
 	
 
@@ -183,6 +185,29 @@ app.post("/checkmessage", async (request,response)=>{
 	  }
 
 	  let storedDBItems = await dbItems()
+
+
+
+	  async function  find_premades(row,column,search_type){
+		const existing_image = await Entry.findOne({ origin_id: request.body.message_id,quadrant:column, type: search_type}).exec();
+		// const existing_image = await Entry.findOne({ origin_id: request.body.message_id}).exec();
+		console.log(request.body.message_id,request.body.columns_,determine_type(request.body.row_,request.body.columns_))
+		return existing_image
+		}
+
+
+
+	  const  premade_image = await find_premades(request.body.row_,request.body.columns_,determine_type(request.body.row_,request.body.columns_))
+	  
+	  if (premade_image!=null){
+		console.log('variant already in database.')
+		premade_image.items = storedDBItems
+		response.render("index.ejs", premade_image)
+
+	  }
+	  else{
+	  
+
 	// .then(message=>message.clickButton({ row: button_row, col: button_column}));
 	message.clickButton({ row:request.body.row_, col: request.body.columns_})
 	const filter = m => m.attachments.size==1&&m.author.id =='936929561302675456'&&m.reference.messageId == request.body.message_id
@@ -196,8 +221,9 @@ app.post("/checkmessage", async (request,response)=>{
 							  origin_id:request.body.message_id,
 							  type:determine_type(request.body.row_,request.body.columns_),
 							  time:collected.first().createdTimestamp,
-							  items:storedDBItems,
-							  prompt:""
+							  prompt:"",
+							  quadrant:request.body.columns_,
+							  items:storedDBItems
 							   }
 	
 			console.log(params)
@@ -208,5 +234,7 @@ app.post("/checkmessage", async (request,response)=>{
 			response.render("index.ejs", params)
 		})
 	  .catch(collected => console.log(`After a minute, only ${collected.size} ${collected} out of 4 voted.`));
+	}
 	 });
+	
 
